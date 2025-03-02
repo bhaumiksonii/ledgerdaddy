@@ -73,7 +73,7 @@ if uploaded_files:
             st.warning("Please enter your name to filter the table.")
 
     else:
-        st.warning("No tables found in any PDFs!")
+        st.warning("No tables found in any PDFs")
 
 else:
     st.info("Please upload PDF files to continue.")
