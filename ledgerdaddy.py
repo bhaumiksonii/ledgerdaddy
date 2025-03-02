@@ -68,7 +68,7 @@ if uploaded_file:
                 # total_money = filtered_df["Balance(INR)"].sum()
                 # st.subheader(f"💰 Total Money: **₹{total_money:,.2f}**")
                 filtered_df = filtered_df.drop("Balance(INR)",axis=1) 
-                filtered_df[['Withdrawals', 'Deposits']] = filtered_df[['Withdrawals', 'Deposits']].replace({',': ''}, regex=True).astype(int)
+                filtered_df[['Withdrawals', 'Deposits']] = filtered_df[['Withdrawals', 'Deposits']].replace({',': ''}, regex=True).astype(float).astype(int)
 
 # Calculate the sum for col5 and col7 and append as a new row
                 new_row = {col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else '' for col in filtered_df.columns}
