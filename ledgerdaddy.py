@@ -61,7 +61,7 @@ if uploaded_files:
             filtered_df[['Withdrawals', 'Deposits']] = filtered_df[['Withdrawals', 'Deposits']].replace({',': ''}, regex=True).astype(float).astype(int)
 
             # Calculate Grand Total row
-            new_row = pd.DataFrame([{col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else ('Grand Total' if col == 'Date' else ( (filtered_df["Withdrawals"].sum() - filtered_df["Deposits"].sum()) if col == 'AutoSweep' else '')) for col in filtered_df.columns}])
+            new_row = pd.DataFrame([{col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else ('Grand Total' if col == 'Date' else ( (filtered_df["Withdrawals"].sum() - filtered_df["Deposits"].sum()) if col == 'Autosweep' else '')) for col in filtered_df.columns}])
 
             # Append Grand Total row
             filtered_df = pd.concat([filtered_df, new_row], ignore_index=True)
