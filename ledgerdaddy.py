@@ -67,7 +67,7 @@ if uploaded_file:
                 # print("qonowdhqow",filtered_df["Balance(INR)"])
                 # total_money = filtered_df["Balance(INR)"].sum()
                 # st.subheader(f"💰 Total Money: **₹{total_money:,.2f}**")
-                filtered_df = filtered_df.drop("Balance(INR)") 
+                filtered_df = filtered_df.drop("Balance(INR)",axis=1) 
                 st.dataframe(filtered_df, use_container_width=True,width=400)
 
             else:
