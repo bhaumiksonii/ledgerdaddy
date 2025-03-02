@@ -27,19 +27,20 @@ def convert_money(value):
         except ValueError:
             return 0
 if uploaded_files:
-    for uploaded_file in uploaded_files:
     # Ask for PDF password
-        password = st.text_input("Enter PDF Password (if required)", type="password")
+    password = st.text_input("Enter PDF Password (if required)", type="password")
 
-        # Process PDF
+    all_data = []  # List to store data from all PDFs
+
+    for uploaded_file in uploaded_files:
         try:
             doc = fitz.open(stream=uploaded_file.read(), filetype="pdf")
             if doc.needs_pass:
                 if not doc.authenticate(password):
-                    st.error("Incorrect password! ❌")
-                    st.stop()
+                    st.error(f"Incorrect password for {uploaded_file.name}! ❌")
+                    continue  # Skip this file
                 else:
-                    st.success("Correct password!")
+                    st.success(f"Correct password for {uploaded_file.name}!")
 
             tables = []
             with pdfplumber.open(uploaded_file, password=password) as pdf:
@@ -48,39 +49,45 @@ if uploaded_files:
                     if table:
                         tables.append(pd.DataFrame(table))
 
-            if not tables:
-                st.warning("No tables found in the PDF!")
-            else:
-                # Combine tables into a single DataFrame
+            if tables:
                 df = pd.concat(tables, ignore_index=True)
-                # Use the first row as headers
-                df.columns = df.iloc[0]
+                df.columns = df.iloc[0]  # First row as header
                 df = df[1:].reset_index(drop=True)
-                # Filter based on user name
-                if name:
-                    filtered_df = df[df["Particulars"].str.contains(name, case=False, na=False)]
-                    st.write(f"🔍 Showing results for **{name}**:")
-                    # filtered_df["Balance(INR)"] = filtered_df["Balance(INR)"].apply(convert_money)
-
-                    # Calculate Total Money
-                    # total_money = filtered_df["Withdrawla"].sum()
-                    # print("qonowdhqow",filtered_df["Balance(INR)"])
-                    # total_money = filtered_df["Balance(INR)"].sum()
-                    # st.subheader(f"💰 Total Money: **₹{total_money:,.2f}**")
-                    filtered_df = filtered_df.drop("Balance(INR)",axis=1) 
-                    filtered_df[['Withdrawals', 'Deposits']] = filtered_df[['Withdrawals', 'Deposits']].replace({',': ''}, regex=True).astype(float).astype(int)
-
-    # Calculate the sum for col5 and col7 and append as a new row
-                    new_row = pd.DataFrame([{col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else ('Grand Total' if col == 'Date' else '') for col in filtered_df.columns}])
-                    filtered_df = pd.concat([filtered_df, new_row], ignore_index=True)
-                    st.dataframe(filtered_df, use_container_width=True,width=400)
-
-                else:
-                    st.warning("Please enter your name to filter the table.")
+                all_data.append(df)
 
         except Exception as e:
-            st.error(f"Error processing PDF: {e}")
+            st.error(f"Error processing {uploaded_file.name}: {e}")
+
+    if all_data:
+        # Combine all PDFs data into a single DataFrame
+        combined_df = pd.concat(all_data, ignore_index=True)
+
+        # Filter by user name
+        if name:
+            filtered_df = combined_df[combined_df["Particulars"].str.contains(name, case=False, na=False)]
+            st.write(f"🔍 Showing results for **{name}**:")
+
+            # Drop Balance column
+            filtered_df = filtered_df.drop("Balance(INR)", axis=1)
+
+            # Convert Withdrawals and Deposits to numeric
+            filtered_df[['Withdrawals', 'Deposits']] = filtered_df[['Withdrawals', 'Deposits']].replace({',': ''}, regex=True).astype(float).astype(int)
+
+            # Calculate Grand Total row
+            new_row = pd.DataFrame([{col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else ('Grand Total' if col == 'Date' else '') for col in filtered_df.columns}])
+
+            # Append Grand Total row
+            filtered_df = pd.concat([filtered_df, new_row], ignore_index=True)
+
+            # Display DataFrame
+            st.dataframe(filtered_df, use_container_width=True)
+
+        else:
+            st.warning("Please enter your name to filter the table.")
 
     else:
-        st.info("Please upload a PDF file to continue.")
+        st.warning("No tables found in any PDFs!")
+
+else:
+    st.info("Please upload PDF files to continue.")
 
