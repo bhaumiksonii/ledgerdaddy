@@ -5,7 +5,7 @@ import pdfplumber  # Extract tables from PDFs
 import random
 
 # Streamlit App Title
-st.title("LedgerDaddy!! 📜💰")
+st.title("LedgerDaddy!!")
 
 # User input for name
 name = st.text_input("Enter your Name:")
@@ -67,6 +67,7 @@ if uploaded_file:
                 # print("qonowdhqow",filtered_df["Balance(INR)"])
                 # total_money = filtered_df["Balance(INR)"].sum()
                 # st.subheader(f"💰 Total Money: **₹{total_money:,.2f}**")
+                filtered_df = filtered_df.drop("Balance(INR)") 
                 st.dataframe(filtered_df, use_container_width=True,width=400)
 
             else:
