@@ -5,7 +5,7 @@ import pdfplumber  # Extract tables from PDFs
 import random
 
 # Streamlit App Title
-st.title("LedgerDaddy!!!!!")
+st.sidebar.title("LedgerDaddy!!!!!")
 
 # User input for name
 name = st.sidebar.text_input("Filter Name:")
