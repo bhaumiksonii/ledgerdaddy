@@ -8,14 +8,14 @@ import random
 st.title("LedgerDaddy!!")
 
 # User input for name
-name = st.text_input("Filter Name:")
+name = st.sidebar.text_input("Filter Name:")
 
 # File uploader for PDF
-uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
+uploaded_files = st.sidebar.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
 
 if uploaded_files:
     # Ask for PDF password
-    password = st.text_input("Enter PDF Password (if required)", type="password")
+    password = st.sidebar.text_input("Enter PDF Password (if required)", type="password")
 
     all_data = []  # List to store data from all PDFs
 
@@ -62,7 +62,7 @@ if uploaded_files:
 
             # Calculate Grand Total row
             print(filtered_df.columns)
-            new_row = pd.DataFrame([{col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else ('Grand Total' if col == 'Date' else ( "{:,}".format((filtered_df["Withdrawals"].sum() - filtered_df["Deposits"].sum())) if col == 'Reverse Sweep' else '')) for col in filtered_df.columns}])
+            new_row = pd.DataFrame([{col: filtered_df[col].sum() if col in ['Withdrawals', 'Deposits'] else ('Grand Total' if col == 'Date' else ( "{:,}".format((filtered_df["Withdrawals"].sum() - filtered_df["Deposits"].sum())) if col == 'Reverse\\nSweep' else '')) for col in filtered_df.columns}])
 
             # Append Grand Total row
             filtered_df = pd.concat([filtered_df, new_row], ignore_index=True)
