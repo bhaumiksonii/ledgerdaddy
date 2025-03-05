@@ -5,7 +5,7 @@ import pdfplumber  # Extract tables from PDFs
 import random
 
 # Streamlit App Title
-st.sidebar.title("LedgerDaddy!!!!!")
+st.title("LedgerDaddy!!!!!")
 
 # User input for name
 name = st.sidebar.text_input("Filter Name:")
@@ -77,5 +77,5 @@ if uploaded_files:
         st.warning("No tables found in any PDFs")
 
 else:
-    st.info("Please upload PDF files to continue.")
+    st.sidebar.info("Please upload PDF files to continue.")
 
