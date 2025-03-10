@@ -3,3 +3,6 @@ pdfplumber
 PyMuPDF
 pandas
 streamlit-authenticator
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
