@@ -4,6 +4,8 @@ import streamlit as st
 import json
 
 # Get Google credentials from Streamlit secrets
+st.write("Secrets keys available:", list(st.secrets.keys()))
+
 google_credentials_json = st.secrets["GOOGLE_CREDENTIALS_JSON"]
 credentials_info = json.loads(google_credentials_json)
 
