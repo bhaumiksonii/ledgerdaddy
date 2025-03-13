@@ -7,7 +7,7 @@ import pdfplumber  # Extract tables from PDFs
 st.title("LedgerDaddy!!!!!")
 
 # Sidebar options
-bank_type = st.sidebar.selectbox("Select Bank Type:", ["ICICI Bank", "HDFC Bank", "SBI Bank"], index=0)
+
 name = st.sidebar.text_input("Filter Name:")
 uploaded_files = st.sidebar.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
 
