@@ -9,9 +9,11 @@ st.title("LedgerDaddy!!!!!")
 # Sidebar options
 
 name = st.sidebar.text_input("Filter Name:")
+print("d9uihqwuidgquiwhdui")
 uploaded_files = st.sidebar.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
 
 if uploaded_files:
+    print("qnwudioq")
     password = st.sidebar.text_input("Enter PDF Password (if required)", type="password")
     all_data = []
     
@@ -33,14 +35,15 @@ if uploaded_files:
                 df = pd.concat(tables, ignore_index=True)
                 df.columns = df.iloc[0]
                 df = df[1:].reset_index(drop=True)
+                print(df.to_csv("test.csv"))
                 
                 # Processing based on bank type
-                if bank_type == "ICICI Bank":
-                    df = df.rename(columns={"Reverse\nSweep": "ReverseSweep"})
-                elif bank_type == "HDFC Bank":
-                    df = df.rename(columns={"Txn Details": "TransactionDetails"})
-                elif bank_type == "SBI Bank":
-                    df = df.rename(columns={"Narration": "Details"})
+                # if bank_type == "ICICI Bank":
+                #     df = df.rename(columns={"Reverse\nSweep": "ReverseSweep"})
+                # elif bank_type == "HDFC Bank":
+                #     df = df.rename(columns={"Txn Details": "TransactionDetails"})
+                # elif bank_type == "SBI Bank":
+                #     df = df.rename(columns={"Narration": "Details"})
                 
                 all_data.append(df)
         
